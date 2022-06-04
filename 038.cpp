@@ -6,12 +6,23 @@ using namespace std;
 #define ALL(a) (a).begin(), (a).end()
 #define ll long long
 
+ll gcd(ll a, ll b) {
+  if (a % b == 0) {
+    return b;
+  } else {
+    return gcd(b, a % b);
+  }
+}
+
+ll lcm(ll a, ll b) { return a / gcd(a, b) * b; }
+
 int main() {
-  double h, w;
-  cin >> h >> w;
-  if (h == 1 || w == 1)
-    cout << h * w << endl;
+  ll a, b, ans;
+  cin >> a >> b;
+  ans = lcm(a, b);
+  if (b / gcd(a, b) > 1e18L / a)
+    cout << "Large" << endl;
   else
-    cout << ceil(h / 2) * ceil(w / 2) << endl;
+    cout << ans << endl;
   return 0;
 }
