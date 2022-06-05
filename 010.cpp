@@ -1,80 +1,30 @@
-#include <iostream>
-#include <string>
-#include <vector>
+#include <bits/stdc++.h>
 using namespace std;
-
-int col_search(vector<string> s, vector<pair<int, int>>& p) {
-  int count = 0;
-  bool flag = false;
-  for (int j = 0; j < s.size(); ++j) {
-    for (int i = 0; i < s.size(); ++i) {
-      if (s[i][j] == 'x' && !flag) {
-        if (j <= 0 || s[i][j - 1] == 'x') {
-          continue;
-        } else {
-          count++;
-          flag = true;
-          p.push_back(make_pair(i, j - 1));
-        }
-      } else if (s[i][j] == '.' && flag) {
-        count++;
-        flag = false;
-        p.push_back(make_pair(i, j));
-      } else if (s[i][j] == 'x' && flag && j == s.size() - 1) {
-        p.pop_back();
-        flag = false;
-      } else {
-        continue;
-      }
-    }
-  }
-  return count;
-}
-
-int row_search(vector<string> s, vector<pair<int, int>>& p) {
-  int count = 0;
-  bool flag = false;
-  for (int i = 0; i < s.size(); ++i) {
-    for (int j = 0; j < s.size(); ++j) {
-      if (s[i][j] == 'x' && !flag) {
-        if (j <= 0 || s[i][j - 1] == 'x') {
-          continue;
-        } else {
-          count++;
-          flag = true;
-          p.push_back(make_pair(i, j - 1));
-        }
-      } else if (s[i][j] == '.' && flag) {
-        count++;
-        flag = false;
-        p.push_back(make_pair(i, j));
-      } else if (s[i][j] == 'x' && flag && j == s.size() - 1) {
-        p.pop_back();
-        flag = false;
-      } else {
-        continue;
-      }
-    }
-  }
-  return count;
-}
+#define rep(i, n) for (int i = 0; i < (int)n; ++i)
+#define repi(i, a, b) for (int i = int(a); i < int(b); ++i)
+#define repr(i, n) for (int i = (int)n - 1; i >= 0; --i)
+#define ALL(a) (a).begin(), (a).end()
+#define ll long long
 
 int main() {
-  int n;
+  int n, q;
   cin >> n;
-  vector<string> s(n);
-  vector<pair<int, int>> p_row, p_col;
-  for (int i = 0; i < n; ++i) cin >> s[i];
-  int count_row = row_search(s, p_row);
-  int count_col = col_search(s, p_col);
-  if (count_row < count_col) {
-    cout << count_row << endl;
-    for (int i = 0; i < p.size(); ++i)
-      cout << p_row[i].first << " " << p_row[i].second << endl;
-  } else {
-    cout << count_row << endl;
-    for (int i = 0; i < p.size(); ++i)
-      cout << p_row[i].first << " " << p_row[i].second << endl;
+  vector<int> c(n), p(n), sum_1(n + 1, 0), sum_2(n + 1, 0);
+  rep(i, n) cin >> c[i] >> p[i];
+  rep(i, n) {
+    if (c[i] == 1) {
+      sum_1[i + 1] = sum_1[i] + p[i];
+      sum_2[i + 1] = sum_2[i];
+    } else {
+      sum_2[i + 1] = sum_2[i] + p[i];
+      sum_1[i + 1] = sum_1[i];
+    }
+  }
+  cin >> q;
+  int x, y;
+  rep(i, q) {
+    cin >> x >> y;
+    cout << sum_1[y] - sum_1[x - 1] << " " << sum_2[y] - sum_2[x - 1] << endl;
   }
   return 0;
 }
