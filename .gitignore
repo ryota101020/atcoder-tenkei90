@@ -1,3 +1,5 @@
 .vscode/
 018.dSYM/
 main
+library.cpp
+test.cpp
